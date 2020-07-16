@@ -1,0 +1,140 @@
+@import './variables.scss';
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: 'Roboto Condensed', -apple-system, BlinkMacSystemFont, 'Segoe UI',
+    'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans',
+    'Helvetica Neue', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.visually-hidden {
+  position: absolute !important;
+  height: 1px;
+  width: 1px;
+  overflow: hidden;
+  clip: rect(1px 1px 1px 1px); /* IE6, IE7 */
+  clip: rect(1px, 1px, 1px, 1px);
+  white-space: nowrap; /* added line */
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+main {
+  margin: 0.5rem;
+}
+
+header {
+  padding: 0.5rem;
+  background: $dark-text;
+  color: $success;
+}
+
+h1 {
+  margin: 0;
+  font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto',
+    'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+}
+
+button {
+  display: block;
+  border: none;
+  border-radius: 2.5px;
+  padding: 0.5rem 1rem;
+  background: #f13c20;
+  color: #fff;
+  cursor: pointer;
+
+  &:hover {
+    background: #ca2b12;
+    color: #fff;
+  }
+
+  &:focus {
+    outline: 2px solid #d79922;
+  }
+
+  .text {
+    font-weight: bold;
+  }
+
+  .button-icon {
+    margin-right: 0.5rem;
+    fill: #fff;
+  }
+
+  &.fake {
+    display: inline-block;
+    margin: 0.5rem;
+    margin-left: 0;
+    border: 2px solid #f13c20;
+    padding: 0.35rem;
+    background: #fff;
+    color: #f13c20;
+
+    &:disabled {
+      border: 2px solid #ca2b12;
+      background: #ca2b12;
+      color: #fff;
+    }
+  }
+
+  &.big {
+    margin: 1rem auto;
+    width: 100%;
+  }
+}
+
+.code-container {
+  /* These are technically the same, but use both */
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+
+  -ms-word-break: break-all;
+  /* This is the dangerous one in WebKit, as it breaks things wherever */
+  word-break: break-all;
+  /* Instead use this non-standard one: */
+  word-break: break-word;
+
+  /* Adds a hyphen where the word breaks, if supported (No Blink) */
+  -ms-hyphens: auto;
+  -moz-hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphens: auto;
+
+  td {
+    border: 1px solid black;
+    padding: 0.5rem;
+  }
+}
+
+.camera-space {
+  position: relative;
+  margin: 0 auto;
+  max-width: calc(100vw - 2rem);
+  // height: 87.33vh;
+  background-color: red;
+
+  video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+  }
+
+  canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+  }
+}
