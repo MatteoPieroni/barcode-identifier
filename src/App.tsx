@@ -3,20 +3,7 @@ import { BarcodeScanner } from './components/barcode-scanner/barcode-scanner';
 import { BarcodeResult } from './services/barcode-scanner/barcode-scanner';
 
 export const App: React.FC = () => {
-  const [parsedBarcodes, setParsedBarcodes] = useState<BarcodeResult[]>(() => {
-    return JSON.parse(localStorage.getItem('barcodes') || '[]');
-  });
-
-  const addToLocalStorage = (data: BarcodeResult) => {
-    const oldLocalStorage: BarcodeResult[] = JSON.parse(
-      localStorage.getItem('barcodes') || '[]'
-    );
-
-    localStorage.setItem(
-      'barcodes',
-      JSON.stringify([...oldLocalStorage, data])
-    );
-  };
+  const [parsedBarcode, setParsedBarcode] = useState<BarcodeResult>();
 
   return (
     <div className="App">
@@ -27,30 +14,26 @@ export const App: React.FC = () => {
         <BarcodeScanner
           handleProcessed={(data) => {
             if (window.confirm(`Il codice letto e': ${data.code}. Confermi?`)) {
-              setParsedBarcodes([...parsedBarcodes, data]);
-              addToLocalStorage(data);
+              setParsedBarcode(parsedBarcode);
               return true;
             }
           }}
         />
-        {parsedBarcodes.length > 0 && (
+        {parsedBarcode && (
           <div className="code-container">
             <table>
               <thead>
                 <td>Codice</td>
                 <td>Formato</td>
               </thead>
-              {parsedBarcodes.map((barcode) => (
-                <tr>
-                  <td>{barcode.code}</td>
-                  <td>{barcode.format}</td>
-                </tr>
-              ))}
+							<tr>
+								<td>{parsedBarcode.code}</td>
+								<td>{parsedBarcode.format}</td>
+							</tr>
             </table>
             <button
               onClick={() => {
-                localStorage.clear();
-                setParsedBarcodes([]);
+                setParsedBarcode(null);
               }}
             >
               Resetta tutti i dati

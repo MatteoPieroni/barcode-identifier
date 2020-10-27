@@ -18,7 +18,7 @@ export const QuaggaAdapter = new Adapter({
 
     Quagga.init(
       {
-        debug: true,
+        // debug: true,
         inputStream: {
           name: 'Live',
           type: 'LiveStream',
@@ -29,29 +29,29 @@ export const QuaggaAdapter = new Adapter({
         },
         decoder: {
           readers: ['ean_reader'],
-          debug: {
-            drawBoundingBox: true,
-            showFrequency: true,
-            drawScanline: true,
-            showPattern: true,
-          },
+          // debug: {
+          //   drawBoundingBox: true,
+          //   showFrequency: true,
+          //   drawScanline: true,
+          //   showPattern: true,
+          // },
         },
-        locator: {
-          debug: {
-            showCanvas: true,
-            showPatches: true,
-            showFoundPatches: true,
-            showSkeleton: true,
-            showLabels: true,
-            showPatchLabels: true,
-            showRemainingPatchLabels: true,
-            boxFromPatches: {
-              showTransformed: true,
-              showTransformedBox: true,
-              showBB: true,
-            },
-          },
-        },
+        // locator: {
+        //   debug: {
+        //     showCanvas: true,
+        //     showPatches: true,
+        //     showFoundPatches: true,
+        //     showSkeleton: true,
+        //     showLabels: true,
+        //     showPatchLabels: true,
+        //     showRemainingPatchLabels: true,
+        //     boxFromPatches: {
+        //       showTransformed: true,
+        //       showTransformedBox: true,
+        //       showBB: true,
+        //     },
+        //   },
+        // },
         ...rest,
       },
       function (err) {
@@ -73,41 +73,8 @@ export const QuaggaAdapter = new Adapter({
           }
         });
         Quagga.onProcessed((data: QuaggaJSResultObject) => {
-          const drawingCtx = Quagga.canvas.ctx.overlay;
-          const drawingCanvas = Quagga.canvas.dom.overlay;
-          drawingCtx.font = '24px Arial';
-          drawingCtx.fillStyle = 'green';
-
           if (data) {
-            // console.warn('* quagga onProcessed', data);
-            if (data.boxes) {
-              drawingCtx.clearRect(
-                0,
-                0,
-                parseInt(drawingCanvas.getAttribute('width')),
-                parseInt(drawingCanvas.getAttribute('height'))
-              );
-              data.boxes
-                .filter((box) => box !== data.box)
-                .forEach((box) => {
-                  Quagga.ImageDebug.drawPath(box, { x: 0, y: 1 }, drawingCtx, {
-                    color: 'purple',
-                    lineWidth: 2,
-                  });
-                });
-            }
-
-            if (data.box) {
-              Quagga.ImageDebug.drawPath(data.box, { x: 0, y: 1 }, drawingCtx, {
-                color: 'blue',
-                lineWidth: 2,
-              });
-            }
-
             if (data.codeResult && data.codeResult.code) {
-              drawingCtx.font = '24px Arial';
-              drawingCtx.fillText(data.codeResult.code, 10, 20);
-
               const normalisedResult = processResult(data);
               settings.onProcessed(normalisedResult);
             }
@@ -117,8 +84,28 @@ export const QuaggaAdapter = new Adapter({
         Quagga.start();
       }
     );
-  },
+	},
+
   destroy() {
     Quagga.stop();
-  },
+	},
+
+	decodeImage(src: string, settings: ScannerSettings) {
+		const { onDetected, onProcessed, ...rest } = settings;
+
+		Quagga.decodeSingle({
+			src,
+			decoder: {
+        readers: ["code_128_reader"]
+    	},
+			...rest
+		}, data => {
+			if (data) {
+				if (data.codeResult && data.codeResult.code) {
+					const normalisedResult = processResult(data);
+					settings.onProcessed(normalisedResult);
+				}
+			}
+	})
+	}
 });

@@ -9,7 +9,11 @@ export class Adapter {
 
   start(element: HTMLDivElement, settings: ScannerSettings): void {
     return this.specificAdapter.start(element, settings);
-  }
+	}
+	
+	decodeImage(imageSrc: string, settings: ScannerSettings): BarcodeResult {
+		return this.specificAdapter.decodeImage(imageSrc, settings);
+	}
 
   destroy(): void {
     this.specificAdapter.destroy();
